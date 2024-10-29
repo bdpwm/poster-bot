@@ -10,6 +10,7 @@ class Post(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, nullable=False)
     content = Column(TEXT, nullable=False)
+    photo_path = Column(String, nullable=True)
     created_at = Column(TIMESTAMP, default=get_now_time())
     status = Column(String(50), default='pending')
     approved_at = Column(TIMESTAMP, nullable=True)
