@@ -2,12 +2,14 @@ import asyncio
 from create_bot import bot, dp
 from create_bot import init_db
 from handlers.user_router import user_router
+from handlers.admin_router import admin_router
 
 
 async def main():
     await init_db()
 
     dp.include_router(user_router)
+    dp.include_router(admin_router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 

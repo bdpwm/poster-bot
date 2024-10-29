@@ -27,7 +27,8 @@ async def start_handler(message: Message, command: CommandObject):
         "Once your message is approved, it will be published in the channel!\n\n"
         "📢 To get started, just press button below!"
     )
-    await message.answer(text=response_text, reply_markup=main_kb())
+    await message.answer(text=response_text, reply_markup=main_kb(message.from_user.id))
+
 
 @user_router.message(Command('post'))
 @user_router.message(F.text.contains('Suggest post'))
@@ -37,7 +38,6 @@ async def start_post_suggestion(message: Message, state: FSMContext):
     await state.set_state(PostStates.waiting_for_content)
 
 
-
 @user_router.message(PostStates.waiting_for_content)
 async def post_content(message: Message, state: FSMContext):
     post_content = message.text
@@ -45,10 +45,11 @@ async def post_content(message: Message, state: FSMContext):
 
 
     await message.answer(
-        "📷 Would you like to add a photo? Please send it now, or press 'Skip' if not.",
+        "📷 Would you like to add a photo? Please send it, or press 'Skip' if not.",
         reply_markup=skip_kb()
     )
     await state.set_state(PostStates.waiting_for_photo)
+
 
 @user_router.message(PostStates.waiting_for_photo, F.photo)
 async def post_photo(message: Message, state: FSMContext):
@@ -62,8 +63,9 @@ async def post_photo(message: Message, state: FSMContext):
 
     await save_post(message.from_user.id, post_content, photo_path)
 
-    await message.answer("✅ Thank you! Your post with photo has been submitted for review.", reply_markup=main_kb())
+    await message.answer("✅ Thank you! Your post with photo has been submitted for review.", reply_markup=main_kb(message.from_user.id))
     await state.clear()
+
 
 @user_router.message(PostStates.waiting_for_photo, Command("skip"))
 @user_router.message(F.text.contains('Skip'))
@@ -72,5 +74,5 @@ async def skip_photo(message: Message, state: FSMContext):
     post_content = data['content']
 
     save_post(message.from_user.id, post_content)
-    await message.answer("✅ Thank you! Your post has been submitted for review.", reply_markup=main_kb())
+    await message.answer("✅ Thank you! Your post has been submitted for review.", reply_markup=main_kb(message.from_user.id))
     await state.clear()
