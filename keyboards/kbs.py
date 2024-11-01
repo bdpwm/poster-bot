@@ -30,3 +30,16 @@ def admin_panel_kb():
         resize_keyboard=True,
         one_time_keyboard=True,
     )
+
+def sug_posts_kb():
+    kb_list = [
+        [KeyboardButton(text="⚙️ Admin panel")],
+        [KeyboardButton(text="Accept")],
+        [KeyboardButton(text="Decline")],
+        [KeyboardButton(text="Change")],
+    ]
+    return ReplyKeyboardMarkup(
+        keyboard=kb_list,
+        resize_keyboard=True,
+        one_time_keyboard=True,
+    )

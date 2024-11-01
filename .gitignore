@@ -1,5 +1,6 @@
 .env
 
 /venv/
+/photos/
 
 __pycache__/
