@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from db_handlers.models import Post
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
+from sqlalchemy import func
 
 async def save_post(user_id: int, content: str, photo_path: str = None) -> bool:
     async with AsyncSessionLocal() as session:
@@ -30,3 +31,16 @@ async def get_post() -> Post | None:
         except SQLAlchemyError as e:
             print(f"Error loading post: {e}")
             return None
+
+
+async def count_posts() -> int:
+    async with AsyncSessionLocal() as session:
+        try:
+            result = await session.execute(
+                select(func.count(Post.id))
+            )
+            count = result.scalar()
+            return count
+        except SQLAlchemyError as e:
+            print(f"Error loading posts: {e}")
+            return 0

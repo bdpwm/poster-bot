@@ -22,8 +22,8 @@ def skip_kb():
 
 def admin_panel_kb():
     kb_list = [
-        [KeyboardButton(text="Suggested Posts")],
-        [KeyboardButton(text="Add another admin")],
+        [KeyboardButton(text="📢 Suggested Posts")],
+        [KeyboardButton(text="🔧 Add another admin")],
     ]
     return ReplyKeyboardMarkup(
         keyboard=kb_list,
@@ -34,9 +34,9 @@ def admin_panel_kb():
 def sug_posts_kb():
     kb_list = [
         [KeyboardButton(text="⚙️ Admin panel")],
-        [KeyboardButton(text="Accept")],
-        [KeyboardButton(text="Decline")],
-        [KeyboardButton(text="Change")],
+        [KeyboardButton(text="✅ Accept")],
+        [KeyboardButton(text="❌ Decline")],
+        [KeyboardButton(text="⚒️ Change")],
     ]
     return ReplyKeyboardMarkup(
         keyboard=kb_list,
