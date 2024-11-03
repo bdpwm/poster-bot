@@ -1,4 +1,4 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from create_bot import admins
 
 def main_kb(user_telegram_id: int):
@@ -31,11 +31,10 @@ def admin_panel_kb():
         one_time_keyboard=True,
     )
 
-def sug_posts_kb():
+def sug_posts_kb(post_id: int):
     kb_list = [
-        [KeyboardButton(text="⚙️ Admin panel")],
-        [KeyboardButton(text="✅ Accept")],
-        [KeyboardButton(text="❌ Decline")],
+        [KeyboardButton(text=f"✅ Accept {post_id}")],
+        [KeyboardButton(text=f"❌ Decline {post_id}")],
         [KeyboardButton(text="⚒️ Change")],
     ]
     return ReplyKeyboardMarkup(

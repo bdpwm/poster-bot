@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram.types import FSInputFile
 from create_bot import bot, admins
 from keyboards.kbs import main_kb, admin_panel_kb, sug_posts_kb
-from db_handlers.db import get_post, count_posts
+from db_handlers.db import get_post, count_posts, delete_post
 from utils.utils import get_username_by_id
 from aiogram.utils.chat_action import ChatActionSender
 
@@ -38,9 +38,20 @@ async def suggested_posts(message: Message):
                 )
                 await message.answer(text=response_text)
                 photo = FSInputFile(post.photo_path)
-                await message.answer_photo(photo=photo, caption=post.content, reply_markup=sug_posts_kb())
+                await message.answer_photo(photo=photo, caption=post.content, reply_markup=sug_posts_kb(post.id))
             else:
-                await message.answer(text=post.content, reply_markup=sug_posts_kb())
+                await message.answer(text=post.content, reply_markup=sug_posts_kb(post.id))
         else:
             response_text = "No available posts."
-            await message.answer(text=response_text, reply_markup=sug_posts_kb())
+            await message.answer(text=response_text, reply_markup=sug_posts_kb(0))
+
+
+
+@admin_router.message((F.text.startswith('❌ Decline ')) & (F.from_user.id.in_(admins)))
+async def decline_post(message: Message):
+    try:
+        post_id = int(message.text.split(' ')[-1])
+        await delete_post(post_id)
+        await message.answer("Post has been declined.")
+    except ValueError:
+        await message.answer("Invalid post ID.")
