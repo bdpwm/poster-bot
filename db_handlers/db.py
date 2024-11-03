@@ -17,7 +17,19 @@ async def save_post(user_id: int, content: str, photo_path: str = None) -> bool:
             await session.rollback()
             return False
 
+async def delete_post(post_id: int) -> bool:
+    async with AsyncSessionLocal() as session:
+        try:
+            post = await session.get(Post, post_id)
+            if post is not None:
+                await session.delete(post)
+                await session.commit()
+                return True
+            return False
 
+        except SQLAlchemyError as e:
+            await session.rollback()
+            return False
 
 
 async def get_post() -> Post | None:
