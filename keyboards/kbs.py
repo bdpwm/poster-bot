@@ -36,6 +36,7 @@ def sug_posts_kb(post_id: int):
         [KeyboardButton(text=f"✅ Accept {post_id}")],
         [KeyboardButton(text=f"❌ Decline {post_id}")],
         [KeyboardButton(text="⚒️ Change")],
+        [KeyboardButton(text="⚙️ Admin panel")],
     ]
     return ReplyKeyboardMarkup(
         keyboard=kb_list,

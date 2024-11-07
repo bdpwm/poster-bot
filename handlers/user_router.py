@@ -73,6 +73,6 @@ async def skip_photo(message: Message, state: FSMContext):
     data = await state.get_data()
     post_content = data['content']
 
-    save_post(message.from_user.id, post_content)
+    await save_post(message.from_user.id, post_content)
     await message.answer("✅ Thank you! Your post has been submitted for review.", reply_markup=main_kb(message.from_user.id))
     await state.clear()
