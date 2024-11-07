@@ -32,12 +32,15 @@ async def delete_post(post_id: int) -> bool:
             return False
 
 
-async def get_post() -> Post | None:
+async def get_post(post_id: int = None) -> Post | None:
     async with AsyncSessionLocal() as session:
         try:
-            result = await session.execute(
-                select(Post).filter(Post.status == 'pending')
-            )
+            query = select(Post).filter(Post.status == 'pending')
+            
+            if post_id:
+                query = query.filter(Post.id == post_id)
+
+            result = await session.execute(query)
             post = result.scalars().first()
             return post
         except SQLAlchemyError as e:
