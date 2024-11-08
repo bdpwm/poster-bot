@@ -8,6 +8,7 @@ from keyboards.kbs import main_kb, admin_panel_kb, sug_posts_kb
 from db_handlers.db import get_post, count_posts, delete_post
 from utils.utils import get_username_by_id, accept_post
 from aiogram.utils.chat_action import ChatActionSender
+from dotenv import set_key
 
 
 admin_router = Router()
@@ -66,3 +67,15 @@ async def decline(message: Message):
         await message.answer("Post has been declined.")
     except ValueError:
         await message.answer("Invalid post ID.")
+
+
+
+
+@admin_router.message((F.text.endswith('Add another admin')) & (F.from_user.id.in_(admins)))
+async def add_admin(message: Message):
+    await message.answer("Please reply with the ID of the new admin.")
+
+@admin_router.message(F.from_user.id.in_(admins) & F.reply_to_message)
+async def add_admin_id(message: Message):
+    pass
+
